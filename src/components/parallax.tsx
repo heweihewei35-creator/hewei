@@ -6,17 +6,30 @@ type ParallaxProps = {
   strength?: number;
 };
 
-export function ParallaxBackground({ strength = 18 }: ParallaxProps) {
+export function ParallaxBackground({ strength = 26 }: ParallaxProps) {
   useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY || 0;
-      const shift = Math.min(1, y / 900) * strength;
+    let latestY = 0;
+    let rafId: number | null = null;
+
+    const apply = () => {
+      rafId = null;
+      const y = latestY || 0;
+      const shift = Math.min(1, y / 700) * strength;
       document.documentElement.style.setProperty("--parallax-shift", `${shift}px`);
     };
 
-    onScroll();
+    const onScroll = () => {
+      latestY = window.scrollY || 0;
+      if (rafId != null) return;
+      rafId = window.requestAnimationFrame(apply);
+    };
+
+    apply();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (rafId != null) window.cancelAnimationFrame(rafId);
+    };
   }, [strength]);
 
   return null;
