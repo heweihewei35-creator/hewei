@@ -1,0 +1,224 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f6f2ea;
+  --foreground: #1f1a16;
+  --paper: #fffcf6;
+  --line: #d8cfc0;
+  --accent: #7a4c2a;
+  --ink-soft: #5b4c3f;
+  --parallax-shift: 0px;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background:
+    radial-gradient(circle at 15% 10%, #fff7e7 0%, transparent 30%),
+    radial-gradient(circle at 80% 0%, #f0e2cd 0%, transparent 28%),
+    var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+.site-shell {
+  position: relative;
+}
+
+.site-shell::after {
+  content: "";
+  position: absolute;
+  inset: -40px 0 auto 0;
+  height: 520px;
+  pointer-events: none;
+  background:
+    radial-gradient(420px 280px at 12% 35%, rgba(255, 206, 143, 0.30), transparent 60%),
+    radial-gradient(520px 320px at 70% 0%, rgba(171, 122, 82, 0.18), transparent 62%),
+    radial-gradient(520px 360px at 92% 70%, rgba(255, 234, 201, 0.28), transparent 62%);
+  transform: translateY(calc(var(--parallax-shift) * 1));
+  transition: transform 90ms linear;
+  filter: blur(0.2px);
+}
+
+.site-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(to right, rgba(100, 76, 50, 0.035) 1px, transparent 1px);
+  background-size: 80px 100%;
+  mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+}
+
+.section-card {
+  border: 1px solid color-mix(in srgb, var(--line) 70%, #0000);
+  background: color-mix(in srgb, var(--paper) 92%, #fff);
+  box-shadow: 0 18px 48px rgba(78, 47, 16, 0.08);
+  backdrop-filter: blur(2px);
+}
+
+.section-title {
+  letter-spacing: 0.02em;
+  font-weight: 600;
+}
+
+.muted-label {
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #76695a;
+}
+
+.soul-word {
+  letter-spacing: 0.42em;
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+}
+
+.soft-pill {
+  border: 1px solid color-mix(in srgb, var(--line) 80%, #0000);
+  background: #fffaf0;
+}
+
+.cta-primary {
+  background: linear-gradient(135deg, #6f4325, #8e5b33);
+  color: #fffefb;
+}
+
+.cta-primary:hover {
+  filter: brightness(1.06);
+}
+
+.cta-secondary:hover {
+  background: #f7efdf;
+}
+
+.section-card-hover {
+  transition: transform 260ms ease, box-shadow 260ms ease, background-color 260ms ease;
+}
+
+.section-card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 46px rgba(78, 47, 16, 0.14);
+}
+
+.fade-in-up {
+  animation: fadeInUp 700ms ease both;
+}
+
+.fade-delay-1 {
+  animation-delay: 80ms;
+}
+
+.fade-delay-2 {
+  animation-delay: 160ms;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 700ms ease, transform 700ms ease;
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal--shown {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.art-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.art-line {
+  letter-spacing: 0.58em;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+
+.art-big {
+  font-size: clamp(2.4rem, 4.2vw, 3.6rem);
+  letter-spacing: 0.62em;
+  line-height: 0.95;
+  color: rgba(55, 42, 32, 0.85);
+}
+
+.hero-massive {
+  font-size: clamp(4.4rem, 14vw, 13.2rem);
+  line-height: 0.83;
+  letter-spacing: 0.01em;
+  font-weight: 800;
+}
+
+.hero-script {
+  font-family: "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.hero-bleed {
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  --hero-mx: 0px;
+  --hero-my: 0px;
+}
+
+.hero-bg-motion {
+  transform: scale(1.12) translate3d(var(--hero-mx), var(--hero-my), 0);
+  transition: transform 220ms ease-out;
+  transform-origin: center;
+  will-change: transform;
+}
+
+.hero-flicker-layer {
+  animation: heroGlowPulse 2.4s ease-in-out infinite;
+}
+
+.hero-flicker-layer-2 {
+  animation: heroGlowPulseAlt 3.1s ease-in-out infinite;
+}
+
+@keyframes heroGlowPulse {
+  0%,
+  100% {
+    opacity: 0.98;
+  }
+  50% {
+    opacity: 0.52;
+  }
+}
+
+@keyframes heroGlowPulseAlt {
+  0%,
+  100% {
+    opacity: 0.94;
+  }
+  50% {
+    opacity: 0.42;
+  }
+}
