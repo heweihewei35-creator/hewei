@@ -20,15 +20,19 @@ export function HeroSection() {
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight || 1;
       const progress = Math.max(0, Math.min(1, (0 - rect.top) / vh));
-      const depth = Math.max(0, Math.min(1, latestY / (vh * 1.2)));
-      const baseScale = 1.12 + depth * 0.08;
-      const titleShift = progress * 36;
-      const overlayOpacity = 0.35 + depth * 0.18;
+      const depth = Math.max(0, Math.min(1, latestY / (vh * 1.25)));
+      const baseScale = 1.03 + depth * 0.055;
+      const titleShift = progress * 42;
+      const overlayOpacity = 0.32 + depth * 0.24;
+      const glowA = 0.56 + depth * 0.24;
+      const glowB = 0.52 + depth * 0.2;
 
       el.style.setProperty("--hero-scroll", progress.toFixed(3));
       el.style.setProperty("--hero-scale", baseScale.toFixed(3));
       el.style.setProperty("--hero-title-shift", `${titleShift.toFixed(2)}px`);
       el.style.setProperty("--hero-overlay", overlayOpacity.toFixed(3));
+      el.style.setProperty("--hero-glow-a", glowA.toFixed(3));
+      el.style.setProperty("--hero-glow-b", glowB.toFixed(3));
     };
 
     const onScroll = () => {
@@ -55,8 +59,8 @@ export function HeroSection() {
     const x = (event.clientX - rect.left) / rect.width;
     const y = (event.clientY - rect.top) / rect.height;
 
-    const moveX = (x - 0.5) * 34;
-    const moveY = (y - 0.5) * 26;
+    const moveX = (x - 0.5) * 20;
+    const moveY = (y - 0.5) * 14;
 
     el.style.setProperty("--hero-mx", `${moveX.toFixed(2)}px`);
     el.style.setProperty("--hero-my", `${moveY.toFixed(2)}px`);
@@ -132,15 +136,16 @@ export function HeroSection() {
           <div className="sm:hidden text-[16px] tracking-[0.2em]">MENU</div>
         </header>
 
-        <div className="hero-title-wrap mt-auto pb-0 text-white">
-          <div className="relative mt-2 w-full">
-            <h1 className="hero-massive text-[#f4dfc8] drop-shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
-              <span className="block leading-[0.84]">王昊AI训练师</span>
-              <span className="block mt-[0.18em] text-[0.9em] tracking-[0.02em] leading-[0.9]">
-                求职作品集
-              </span>
-            </h1>
-          </div>
+        <div
+          className="hero-title-wrap pointer-events-none absolute bottom-0 left-1/2 z-10 text-white"
+          style={{ transform: "translate(-50%, -3vh)" }}
+        >
+          <h1 className="hero-massive w-max max-w-[92vw] text-center text-[#f4dfc8] drop-shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
+            <span className="block leading-[0.84]">王昊AI训练师</span>
+            <span className="block mt-[0.18em] text-[0.9em] tracking-[0.02em] leading-[0.9]">
+              求职作品集
+            </span>
+          </h1>
         </div>
 
       </div>
