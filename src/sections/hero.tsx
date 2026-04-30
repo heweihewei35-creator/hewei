@@ -7,6 +7,8 @@ import { useEffect, useRef } from "react";
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const topTitleRef = useRef<HTMLSpanElement | null>(null);
+  const bottomTitleRef = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -48,6 +50,31 @@ export function HeroSection() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
       if (rafId != null) window.cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  useEffect(() => {
+    const syncTitleWidth = () => {
+      const top = topTitleRef.current;
+      const bottom = bottomTitleRef.current;
+      if (!top || !bottom) return;
+
+      bottom.style.transform = "scaleX(1)";
+      const topWidth = top.getBoundingClientRect().width;
+      const bottomWidth = bottom.getBoundingClientRect().width || 1;
+      const scale = Math.max(0.7, Math.min(1.2, topWidth / bottomWidth));
+      bottom.style.transform = `scaleX(${scale.toFixed(4)})`;
+    };
+
+    const frameId = window.requestAnimationFrame(syncTitleWidth);
+    window.addEventListener("resize", syncTitleWidth);
+
+    const fontSet = (document as Document & { fonts?: FontFaceSet }).fonts;
+    fontSet?.ready.then(syncTitleWidth).catch(() => undefined);
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      window.removeEventListener("resize", syncTitleWidth);
     };
   }, []);
 
@@ -136,14 +163,40 @@ export function HeroSection() {
           <div className="sm:hidden text-[16px] tracking-[0.2em]">MENU</div>
         </header>
 
-        <div
-          className="hero-title-wrap pointer-events-none absolute bottom-0 left-1/2 z-10 text-white"
-          style={{ transform: "translate(-50%, -3vh)" }}
-        >
-          <h1 className="hero-massive w-max max-w-[92vw] text-center text-[#f4dfc8] drop-shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
-            <span className="block leading-[0.84]">王昊AI训练师</span>
-            <span className="block mt-[0.18em] text-[0.9em] tracking-[0.02em] leading-[0.9]">
-              求职作品集
+        <div className="hero-title-wrap pointer-events-none absolute bottom-0 left-0 z-10 w-full text-white">
+          <p className="absolute bottom-[54vh] left-[1.2vw] max-w-[360px] text-[clamp(1rem,1.55vw,1.45rem)] font-black uppercase leading-[0.9] tracking-[-0.015em] text-[#f4dfc8] drop-shadow-[0_8px_22px_rgba(0,0,0,0.35)]">
+            AI TRAINER
+            <br />
+            PORTFOLIO FOR HIRING
+          </p>
+          <h1
+            className="relative w-full px-[1.2vw] pb-[0.6vh] text-left font-black uppercase text-[#f4dfc8] drop-shadow-[0_15px_35px_rgba(0,0,0,0.45)]"
+            style={{
+              fontFamily: "var(--font-geist-sans), Arial, sans-serif",
+              fontWeight: 900,
+              letterSpacing: "-0.045em",
+              lineHeight: 0.81,
+            }}
+          >
+            <div className="relative block w-full whitespace-nowrap">
+              <span
+                ref={topTitleRef}
+                className="block"
+                style={{ fontSize: "clamp(4rem, 13.8vw, 17.2rem)" }}
+              >
+                WANG HAO
+              </span>
+            </div>
+            <span
+              ref={bottomTitleRef}
+              className="block -mt-[0.04em] whitespace-nowrap"
+              style={{
+                fontSize: "clamp(4.2rem, 14.05vw, 17.8rem)",
+                display: "inline-block",
+                transformOrigin: "left center",
+              }}
+            >
+              PORTFOLIO
             </span>
           </h1>
         </div>
